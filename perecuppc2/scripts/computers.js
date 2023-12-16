@@ -40,10 +40,10 @@ function createComputerBlock(computerData) {
     textContainer2.className = 'text-container';
     const textComputer3 = document.createElement('div');
     textComputer3.className = 'text-computer3';
-    textComputer3.textContent = computerData.price;
+    textComputer3.textContent = computerData.price + '₽';
     const textComputer4 = document.createElement('div');
     textComputer4.className = 'text-computer3';
-    textComputer4.textContent = computerData.price_per_month;
+    textComputer4.textContent = computerData.price_per_month + '₽';
     textContainer2.appendChild(textComputer3);
     textContainer2.appendChild(textComputer4);
     textContainerFlex.appendChild(textContainer2);
