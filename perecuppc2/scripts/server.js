@@ -18,7 +18,7 @@ function verifyToken(req, res, next) {
     return res.status(401).json({ message: 'Отсутствует токен' });
   }
 
-  jwt.verify(token.split(' ')[1], 'secret_key', (err, decoded) => {
+  jwt.verify(token.split(' ')[1], 'secret_key1', (err, decoded) => {
     if (err) {
       console.error('Ошибка верификации токена:', err);
       return res.status(401).json({ message: 'Невалидный токен' });
@@ -36,7 +36,7 @@ app.post('/checkToken', (req, res) => {
     return res.status(401).json({ message: 'Отсутствует токен' });
   }
 
-  jwt.verify(token, 'secret_key', (err, decoded) => {
+  jwt.verify(token, 'secret_key1', (err, decoded) => {
     if (err) {
       console.error('Ошибка верификации токена:', err);
       return res.status(401).json({ message: 'Невалидный токен' });
@@ -83,7 +83,7 @@ app.post('/register', async (req, res) => {
             username: login,
           };
 
-          jwt.sign({ user }, 'secret_key', { expiresIn: '24h' }, (err, token) => {
+          jwt.sign({ user }, 'secret_key1', { expiresIn: '24h' }, (err, token) => {
             if (err) {
               console.error('Ошибка создания токена:', err);
               res.status(500).send('Ошибка создания токена');
@@ -135,7 +135,7 @@ app.post('/login', async (req, res) => {
               username: login,
             };
 
-            jwt.sign({ user }, 'secret_key', { expiresIn: '24h' }, (err, token) => {
+            jwt.sign({ user }, 'secret_key1', { expiresIn: '24h' }, (err, token) => {
               if (err) {
                 console.error('Ошибка создания токена:', err);
                 res.status(500).send('Ошибка создания токена');
@@ -272,27 +272,6 @@ app.post('/createOrder', verifyToken, async (req, res) => {
     }
     console.error('Ошибка при создании заказа:', error.message);
     res.status(500).send('Ошибка сервера');
-  }
-});
-
-
-
-app.get('/order-history', verifyToken, async (req, res) => {
-  const userId = req.user_id;
-
-  try {
-    const query = `
-      SELECT order_id, order_date
-      FROM order_history
-      WHERE user_id = $1
-    `;
-    const values = [userId];
-    const result = await pool.query(query, values);
-    const orders = result.rows;
-    res.json({ orders });
-  } catch (error) {
-    console.error('Ошибка получения истории заказов:', error);
-    res.status(500).json({ message: 'Ошибка сервера' });
   }
 });
 
